@@ -7,13 +7,13 @@ MY_PN="local"
 MY_PV=$(ver_rs 1- -)
 MY_P="${MY_PN}-${MY_PV}"
 
-inherit rpm xdg-utils
+inherit rpm xdg
 
 DESCRIPTION="A program to create a local WordPress development environment."
 HOMEPAGE="https://localbyflywheel.com/"
 SRC_URI="https://local-by-flywheel-flywheel.netdna-ssl.com/releases/${MY_PV}/${MY_P}-linux.rpm"
 
-LICENSE="proprietary"
+LICENSE="freedist"
 SLOT="0"
 KEYWORDS="~amd64"
 IUSE=""
@@ -21,16 +21,14 @@ IUSE=""
 DEPEND="
     sys-process/numactl
     dev-libs/libaio
-    =sys-libs/ncurses-compat-5.9"
+    <sys-libs/ncurses-compat-6.0"
 
 RDEPEND="${DEPEND}"
-BDEPEND=""
 
 S=${WORKDIR}
 
 src_unpack() {
-    rpm_src_unpack ${A}
-    cd "${S}"
+    rpm_src_unpack
 }
 
 src_install() {
@@ -40,15 +38,4 @@ src_install() {
     fowners root:root /opt/Local/chrome-sandbox
     fperms 4755 /opt/Local/chrome-sandbox
     fperms 755 /opt/Local/local
-}
-
-pkg_postinst() {
-    xdg_desktop_database_update
-    xdg_mimeinfo_database_update
-    xdg_icon_cache_update
-}
-
-pkg_postrm() {
-    xdg_desktop_database_update
-    xdg_icon_cache_update
 }
